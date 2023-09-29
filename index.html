@@ -9,25 +9,37 @@
             margin: 0;
             padding: 0;
             height: 100vh;
-            width: 100vw;
             background-color: red;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             font-family: Arial, sans-serif;
+        }
+
+        #dateTime {
+            margin-top: 20px;
+            font-size: 20px;
         }
     </style>
 </head>
 <body>
     <h1>Task Completed!</h1>
+    <div id="dateTime"></div>
 
     <audio id="alertSound" autoplay>
         <source src="data:audio/wav;base64,UklGRhwMAABXQVZFZm10IBAAAAABAAEAQB8AAEABAA..." type="audio/wav">
-        <!-- This is a very short beep sound encoded in Base64 for simplicity. You can replace it with any other sound file you like. -->
     </audio>
 
     <script>
         document.getElementById('alertSound').play();
+
+        // Get current date and time
+        const now = new Date();
+        const dateString = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+
+        // Display date and time
+        document.getElementById('dateTime').textContent = `Alerted on: ${dateString}`;
     </script>
 </body>
 </html>

@@ -25,7 +25,9 @@
 </head>
 <body>
     <h1>Task Completed!</h1>
+    <div id="startTime"></div>
     <div id="dateTime"></div>
+    <div id="duration"></div>
 
     <audio id="alertSound" autoplay>
         <source src="data:audio/wav;base64,UklGRhwMAABXQVZFZm10IBAAAAABAAEAQB8AAEABAA..." type="audio/wav">
@@ -40,6 +42,57 @@
 
         // Display date and time
         document.getElementById('dateTime').textContent = `Alerted on: ${dateString}`;
+
+        let StartTime;
+
+        const getQueryParameter = (param) => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+};
+
+const parseDuration = (ms) => {
+  const seconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  const daysStr = days > 0 ? `${days} days ` : '';
+  const hoursStr = hours % 24 > 0 ? `${hours % 24} hours ` : '';
+  const minutesStr = minutes % 60 > 0 ? `${minutes % 60} minutes ` : '';
+  const secondsStr = seconds % 60 > 0 ? `${seconds % 60} seconds ` : '';
+
+  return `${daysStr}${hoursStr}${minutesStr}${secondsStr}`.trim();
+};
+
+const calculateDuration = () => {
+  const startTimeStr = getQueryParameter('startTime');
+  if (!startTimeStr) {
+    console.error('No startTime parameter found in the URL.');
+    return;
+  }
+
+  const startTime = new Date(startTimeStr);
+  if (isNaN(startTime)) {
+    console.error('Invalid date format for startTime parameter.');
+    return;
+  }
+StartTime = `${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString()}`;
+
+  const now = new Date();
+  const duration = now - startTime;
+  const readableDuration = parseDuration(duration);
+
+  return readableDuration;
+};
+
+const duration = calculateDuration();
+if (duration && StartTime) {
+  console.log(`Duration since startTime: ${duration}`);
+  // Use duration wherever needed in your webpage
+    document.getElementById('startTime').textContent = `Started on: ${StartTime}`;
+    
+    document.getElementById('duration').textContent = `duration: ${duration}`;
+}
     </script>
 </body>
 </html>
